@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adivina la fruta</title>
+<style>
+  /* Estilos para el cuerpo */
+  body {
+        font-family:'Courier New', Courier, monospace;
+        background-image: url('graphic-5403808_1280.png');
+        background-size: cover;
+        background-position: center;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+  /* Estilos para el contenedor principal */
+  .container {
+      background-color:lightgray;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      max-width: 400px;
+      width: 100%;
+  }
+
+  /* Estilos para el título */
+  h1 {
+      text-align: center;
+      margin-bottom: 20px;
+  }
+
+  /* Estilos para las preguntas */
+  .pregunta {
+      margin-bottom: 10px;
+  }
+
+  /* Estilos para las opciones */
+  .opcion {
+      display: flex;
+      justify-content: space-between;
+  }
+
+  /* Estilos para el botón */
+  button {
+      width: 48%;
+      padding: 10px;
+      border-radius: 5px;
+      border: none;
+      background-color:orange;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+  }
+
+  button:hover {
+      background-color:chocolate;
+  }
+
+  /* Estilos para el resultado */
+  #resultado {
+      margin-top: 20px;
+      text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Adivina la fruta</h1>
+
+    <div id="preguntas" class="pregunta"></div>
+    <div class="opcion">
+        <button onclick="responderPregunta(true)">Sí</button>
+        <button onclick="responderPregunta(false)">No</button>
+    </div>
+
+    <!-- Div para mostrar el resultado de la adivinanza -->
+    <div id="resultado"></div>
+</div>
+
+<script>
+    const preguntas = [
+        {
+            pregunta: "¿La fruta es de color rojo?",
+            caracteristica: "color",
+            respuesta: "rojo"
+        },
+        {
+            pregunta: "¿La fruta es de color naranja?",
+            caracteristica: "color",
+            respuesta: "naranja"
+        },
+        {
+            pregunta: "¿La fruta es de color amarillo?",
+            caracteristica: "color",
+            respuesta: "amarillo"
+        },
+        {
+            pregunta: "¿La fruta es de color verde?",
+            caracteristica: "color",
+            respuesta: "verde"
+        },
+        {
+            pregunta: "¿La fruta es de color morado?",
+            caracteristica: "color",
+            respuesta: "morado"
+        },
+        {
+            pregunta: "¿La fruta tiene una textura suave?",
+            caracteristica: "textura",
+            respuesta: "suave"
+        },
+        {
+            pregunta: "¿La fruta tiene una textura peluda?",
+            caracteristica: "textura",
+            respuesta: "peluda"
+        },
+        {
+            pregunta: "¿La fruta tiene una textura lisa?",
+            caracteristica: "textura",
+            respuesta: "lisa"
+        },
+        {
+            pregunta: "¿La fruta tiene una textura rugosa?",
+            caracteristica: "textura",
+            respuesta: "rugosa"
+        },
+        {
+            pregunta: "¿La fruta tiene una textura dura?",
+            caracteristica: "textura",
+            respuesta: "dura"
+        },
+        {
+            pregunta: "¿La fruta tiene forma redonda?",
+            caracteristica: "forma",
+            respuesta: "redonda"
+        },
+        {
+            pregunta: "¿La fruta tiene forma alargada?",
+            caracteristica: "forma",
+            respuesta: "alargada"
+        },
+        {
+            pregunta: "¿La fruta tiene forma ovalada?",
+            caracteristica: "forma",
+            respuesta: "ovalada"
+        },
+        {
+            pregunta: "¿La fruta tiene forma irregular?",
+            caracteristica: "forma",
+            respuesta: "irregular"
+        },
+        {
+            pregunta: "¿La fruta tiene forma cónica?",
+            caracteristica: "forma",
+            respuesta: "cónica"
+        },
+        {
+            pregunta: "¿La fruta es de tamaño pequeño?",
+            caracteristica: "tamaño",
+            respuesta: "pequeña"
+        },
+        {
+            pregunta: "¿La fruta es de tamaño mediano?",
+            caracteristica: "tamaño",
+            respuesta: "mediana"
+        },
+        {
+            pregunta: "¿La fruta es de tamaño grande?",
+            caracteristica: "tamaño",
+            respuesta: "grande"
+        },
+        {
+            pregunta: "¿La fruta tiene un sabor dulce?",
+            caracteristica: "sabor",
+            respuesta: "dulce"
+        },
+        {
+            pregunta: "¿La fruta tiene un sabor ácido?",
+            caracteristica: "sabor",
+            respuesta: "ácido"
+        },
+        {
+            pregunta: "¿La fruta tiene un sabor dulce y ácido?",
+            caracteristica: "sabor",
+            respuesta: "dulce y ácido"
+        },
+        {
+            pregunta: "¿La fruta tiene un sabor amargo?",
+            caracteristica: "sabor",
+            respuesta: "amargo"
+        },
+        {
+            pregunta: "¿La fruta tiene un sabor picante?",
+            caracteristica: "sabor",
+            respuesta: "picante"
+        },
+    ];
+
+    let preguntaActual = 0;
+    let caracteristicasUsuario = {};
+
+    function responderPregunta(responderSi) {
+        const pregunta = preguntas[preguntaActual];
+        caracteristicasUsuario[pregunta.caracteristica] = responderSi ? pregunta.respuesta : null;
+        preguntaActual++;
+        mostrarSiguientePregunta();
+    }
+
+    function mostrarSiguientePregunta() {
+        if (preguntaActual < preguntas.length) {
+            const pregunta = preguntas[preguntaActual];
+            document.getElementById("preguntas").innerHTML = pregunta.pregunta;
+        } else {
+            adivinarFruta();
+        }
+    }
+
+    function adivinarFruta() {
+        const frutaAdivinada = adivinarFrutaPorCaracteristicas(caracteristicasUsuario);
+        const resultadoDiv = document.getElementById("resultado");
+        resultadoDiv.textContent = "La fruta es: " + frutaAdivinada;
+    }
+
+    function adivinarFrutaPorCaracteristicas(caracteristicasUsuario) {
+        const caracteristicasFrutas = {
+    color: {
+        rojo: ["Manzana", "Fresa", "Cereza", "Sandía"],
+        naranja: ["Naranja", "Mandarina", "Durazno", "Papaya","Habanero"],
+        amarillo: ["Plátano", "Piña", "Mango"],
+        verde: ["Pera", "Kiwi", "Lima","Limón","Chile Serrano"],
+        morado: ["Ciruela", "Uva", "Berenjena"]
+    },
+    textura: {
+        suave: ["Manzana", "Pera", "Uva","Cereza","Mango"],
+        peluda: ["Kiwi", "Durazno"],
+        lisa: ["Naranja", "Mandarina", "Limón", "Ciruela","Lima","Papaya","Plátano","Berenjena","Chile Serrano","Habanero"],
+        rugosa: ["Piña", "Fresa"],
+        dura: ["Sandía", "Coco"]
+    },
+    forma: {
+        redonda: ["Manzana", "Naranja", "Limón", "Uva","Lima","Cereza","Mandarina"],
+        alargada: ["Pera", "Plátano", "Mango", "Papaya","Berenjena","Chile Serrano"],
+        ovalada: ["Ciruela", "Durazno","Kiwi"],
+        irregular: ["Piña", "Fresa", "Sandía","Habanero"],
+        cónica: ["Mango"]
+    },
+    tamaño: {
+        pequeña: ["Uva", "Fresa", "Cereza","Chile Serrano","Habanero"],
+        mediana: ["Manzana", "Naranja", "Mandarina", "Limón","Lima","Durazno","Plátano","Mango","Pera","Kiwi","Ciruela","Berenjena"],
+        grande: ["Sandía", "Piña", "Papaya", "Coco"],
+    },
+    sabor: {
+        dulce: ["Manzana", "Pera", "Uva", "Durazno","Sandía","Plátano"],
+        ácido: ["Limón", "Naranja", "Mandarina","Lima"],
+        dulce_y_ácido: ["Fresa", "Cereza", "Mango", "Papaya","Kiwi","Ciruela","Piña"],
+        amargo: ["Toronja", "Pomelo","Berenjena"],
+        picante: ["Chile Serrano", "Habanero"]
+    }
+};
+
+let frutasPosibles = [];
+
+    // Iterar sobre las características del usuario
+    for (let caracteristica in caracteristicasUsuario) {
+        // Verificar si la característica está definida y no es nula
+        if (caracteristicasUsuario.hasOwnProperty(caracteristica) && caracteristicasUsuario[caracteristica] !== null) {
+            // Obtener las frutas posibles para la característica actual
+            let frutasParaCaracteristica = caracteristicasFrutas[caracteristica][caracteristicasUsuario[caracteristica]];
+
+            // Si no hay frutas posibles para alguna característica, devolver un arreglo vacío
+            if (!frutasParaCaracteristica) return [];
+
+            // Si es la primera característica, agregar todas las frutas posibles
+            if (frutasPosibles.length === 0) {
+                frutasPosibles = frutasParaCaracteristica;
+            } else {
+                // Filtrar las frutas posibles basadas en la característica actual
+                frutasPosibles = frutasPosibles.filter(fruta => frutasParaCaracteristica.includes(fruta));
+            }
+        }
+    }
+
+    // Devolver la primera fruta posible, si existe
+    return frutasPosibles.length > 0 ? frutasPosibles[0] : "No se pudo determinar la fruta.";
+}
+
+    // Mostrar la primera pregunta al cargar la página
+    mostrarSiguientePregunta();
+</script>
+
+</body>
+</html>
