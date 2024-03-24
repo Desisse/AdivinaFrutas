@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Adivina la fruta</title>
 <style>
-  /* Estilos para el cuerpo */
+  
   body {
         font-family:'Courier New', Courier, monospace;
         background-image: url('graphic-5403808_1280.png');
@@ -19,7 +19,6 @@
         height: 100vh;
     }
 
-  /* Estilos para el contenedor principal */
   .container {
       background-color:lightgray;
       border-radius: 10px;
@@ -29,24 +28,20 @@
       width: 100%;
   }
 
-  /* Estilos para el título */
   h1 {
       text-align: center;
       margin-bottom: 20px;
   }
 
-  /* Estilos para las preguntas */
   .pregunta {
       margin-bottom: 10px;
   }
 
-  /* Estilos para las opciones */
   .opcion {
       display: flex;
       justify-content: space-between;
   }
 
-  /* Estilos para el botón */
   button {
       width: 48%;
       padding: 10px;
@@ -63,7 +58,6 @@
       background-color:chocolate;
   }
 
-  /* Estilos para el resultado */
   #resultado {
       margin-top: 20px;
       text-align: center;
@@ -80,8 +74,6 @@
         <button onclick="responderPregunta(true)">Sí</button>
         <button onclick="responderPregunta(false)">No</button>
     </div>
-
-    <!-- Div para mostrar el resultado de la adivinanza -->
     <div id="resultado"></div>
 </div>
 
@@ -268,31 +260,20 @@
 
 let frutasPosibles = [];
 
-    // Iterar sobre las características del usuario
     for (let caracteristica in caracteristicasUsuario) {
-        // Verificar si la característica está definida y no es nula
         if (caracteristicasUsuario.hasOwnProperty(caracteristica) && caracteristicasUsuario[caracteristica] !== null) {
-            // Obtener las frutas posibles para la característica actual
             let frutasParaCaracteristica = caracteristicasFrutas[caracteristica][caracteristicasUsuario[caracteristica]];
-
-            // Si no hay frutas posibles para alguna característica, devolver un arreglo vacío
             if (!frutasParaCaracteristica) return [];
-
-            // Si es la primera característica, agregar todas las frutas posibles
             if (frutasPosibles.length === 0) {
                 frutasPosibles = frutasParaCaracteristica;
             } else {
-                // Filtrar las frutas posibles basadas en la característica actual
                 frutasPosibles = frutasPosibles.filter(fruta => frutasParaCaracteristica.includes(fruta));
             }
         }
     }
-
-    // Devolver la primera fruta posible, si existe
     return frutasPosibles.length > 0 ? frutasPosibles[0] : "No se pudo determinar la fruta.";
 }
 
-    // Mostrar la primera pregunta al cargar la página
     mostrarSiguientePregunta();
 </script>
 
